@@ -10,7 +10,8 @@ CONFIG += c++17
 INCLUDEPATH += \
         $$PWD/controllers/inc/ \
 	$$PWD/views/ \
-	$$PWD/models/inc/
+	$$PWD/models/inc/ \
+	$$PWD/resources/
 SOURCES += \
     main.cpp \
     $$PWD/controllers/src/mainwindow.cpp\

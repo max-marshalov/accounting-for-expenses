@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
+#include "databaseservice.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,6 +22,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    DataBaseService dataBaseService;
+    void addToTable(QString total, QString category, QString date);
 
 };
 #endif // MAINWINDOW_H

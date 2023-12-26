@@ -1,20 +1,22 @@
 #include "databaseservice.h"
 #include <QDebug>
 #include <QtSql>
+#include <QDir>
 #include <QString>
 #include <QList>
 #include <stdbool.h>
+#include <string.h>
 DataBaseService::DataBaseService()
 {
-
 }
 void DataBaseService ::init(){
-    QSqlDatabase dataBase = QSqlDatabase::addDatabase("QSQLITE");
-    dataBase.setDatabaseName("expenses.sqlite");
+    dataBase = QSqlDatabase::addDatabase("QSQLITE");
+    QString path = QDir :: homePath() + "/expenses.db";
+    dataBase.setDatabaseName(path);
+    QSqlQuery initQuery;
     if(!dataBase.open()){
         qDebug() << dataBase.lastError().text();
     }
-    QSqlQuery initQuery;
     QString initString = "CREATE TABLE expenses ("
                          "id integer PRIMARY KEY NOT NULL, "
                          "date VARCHAR(255), "
@@ -25,6 +27,24 @@ void DataBaseService ::init(){
     if(!b){
         qDebug() << initQuery.lastError().text();
     }
+
+}
+void DataBaseService :: close(){
+    dataBase.close();
+    qDebug() << "Data base has been closed";
+}
+void DataBaseService :: addItem(QString total, QString category, QString date){
+    QSqlQuery addQuery;
+    addQuery.prepare("INSERT INTO expenses (date, category, total) VALUES(?, ?, ?)");
+    addQuery.addBindValue(date);
+    addQuery.addBindValue(category);
+    addQuery.addBindValue(total);
+    bool b = addQuery.exec();
+
+    if(!b){
+        qDebug() << addQuery.lastError().text();
+    }else{
+        dataBase.commit();}
 
 }
 
